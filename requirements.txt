@@ -1,0 +1,14 @@
+avro-python3==1.9.2.1
+beautifulsoup4==4.9.0
+certifi==2020.4.5.1
+chardet==3.0.4
+confluent-kafka==1.4.1
+fastavro==0.23.3
+google==2.0.3
+idna==2.9
+protobuf==3.11.3
+pytz==2020.1
+requests==2.23.0
+six==1.14.0
+soupsieve==2.0
+urllib3==1.25.9
