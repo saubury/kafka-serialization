@@ -1,0 +1,17 @@
+message Meal {
+  required string name = 1;
+  optional string alternate_name = 2;
+
+  enum FoodType {
+    INGREDIENT = 0;
+    SNACK = 1;
+    DRINK = 2;
+  }
+
+  message MealItems {
+    required string number = 1;
+    optional FoodType type = 2 [default = INGREDIENT];
+  }
+
+  repeated MealItems item = 4;
+}
