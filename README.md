@@ -323,5 +323,9 @@ pip install -r requirements.txt
 ```
 
 
+# Conclusion
 
+Kafka continues to grow in capabilities, and having the options of AVRO, Protobuf, JSON Schema use within the Confluent Platform gives even more opportunities to build cool streaming applications
+The code for these examples available at
+https://github.com/saubury/kafka-serialization
 
