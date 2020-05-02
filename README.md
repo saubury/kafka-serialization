@@ -46,7 +46,7 @@ Our initial set of yummy data looks like this
 ## AVRO serialization 
 Let's remind ourselves how to encode our snacks using AVRO serialization. We'll use the include command line tool `kafka-avro-console-producer` as a Kafka producer which can perform serialization (with a schema provided as a command line parameter).  A _producer_ is something that _writes_ data into a Kafka broker.
 
-```
+```bash
 kafka-avro-console-producer  --broker-list localhost:9092 --topic SNACKS_AVRO --property value.schema='
 {
   "type": "record",
@@ -61,7 +61,7 @@ kafka-avro-console-producer  --broker-list localhost:9092 --topic SNACKS_AVRO --
 
 And to _read_ the data, we can use the `kafka-avro-console-consumer` command line application to act as kafka consumer to read and de-serializing our AVRO data
 
-```
+```bash
 kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic SNACKS_AVRO --from-beginning 
 
 {"name":"cookie","calories":500.0,"colour":"brown"}
@@ -73,7 +73,7 @@ kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic SNACKS_AVR
 
 This time we'll use _protobuf_ serialization with the new `kafka-protobuf-console-producer` kafka producer. The concept is similar to to approach we took with AVRO, however this time our Kafka producer will can perform protobuf serialization.  Note the protobuf schema is provided as a command line parameter.
 
-```
+```bash
 kafka-protobuf-console-producer --broker-list localhost:9092 --topic SNACKS_PROTO --property value.schema='
 message Snack {
     required string name = 1;
@@ -84,7 +84,7 @@ message Snack {
 
 And to read the data, we can use the `kafka-protobuf-console-consumer` kafka consumer for de-serializing our protobuf data
 
-```
+```bash
 kafka-protobuf-console-consumer --bootstrap-server localhost:9092 --topic SNACKS_PROTO --from-beginning 
 
 {"name":"cookie","calories":"500","colour":"brown"}
@@ -97,7 +97,7 @@ kafka-protobuf-console-consumer --bootstrap-server localhost:9092 --topic SNACKS
 
 Finally we'll use JSON Schema serialization with the new `kafka-json-schema-console-producer` kafka producer.  Note the json-schema schema is provided as a command line parameter.
 
-```
+```bash
 kafka-json-schema-console-producer --broker-list localhost:9092 --topic SNACKS_JSONSCHEMA --property value.schema='
 {
   "definitions" : {
@@ -118,7 +118,7 @@ kafka-json-schema-console-producer --broker-list localhost:9092 --topic SNACKS_J
 
 And to read the data, we can use the `kafka-json-schema-console-consumer` kafka consumer for de-serializing our json-schema data
 
-```
+```bash
 kafka-json-schema-console-consumer --bootstrap-server localhost:9092 --topic SNACKS_JSONSCHEMA --from-beginning 
 
 {"name":"cookie","calories":"500","colour":"brown"}
@@ -130,7 +130,7 @@ kafka-json-schema-console-consumer --bootstrap-server localhost:9092 --topic SNA
 
 You may have wondered where the schemas actually went in the above examples?  The Confluent Schema Registry has been diligently storing these schemas (as part of the serialization process when using kafka-blah-console-producer).  That is, both the schema name (eg., _SNACKS_PROTO-value_), schema content, version and style (protobuf, Avro) have all been stored.  We can peak at the stored schema with `curl`. For example, to explore the recently used protobuf schema for our snacks
 
-```
+```bash
 curl -s -X GET http://localhost:8081/subjects/SNACKS_PROTO-value/versions/1 
 ```
 
@@ -199,7 +199,7 @@ message Meal {
 To try this modeling with protobuf in Kafka
 
 
-```
+```bash
 kafka-protobuf-console-producer --broker-list localhost:9092 --topic MEALS_PROTO --property value.schema='
 message Meal {
   required string name = 1;
@@ -244,7 +244,7 @@ A new data payload (with the inclusion of _beer_)
 }
 ```
 
-```
+```bash
 kafka-protobuf-console-producer --broker-list localhost:9092 --topic MEALS_PROTO --property value.schema='
 message Meal {
   required string name = 1;
@@ -291,20 +291,31 @@ Let us now build an application demonstrating protobuf classes
 To regenerate Protobuf classes you must first install the protobuf compiler.  See the protocol buffer docs for instructions on installing and using protoc.
 https://developers.google.com/protocol-buffers/docs/pythontutorial
 
+### Python compile schema
+```bash
+protoc -I=. --python_out=. ./meal.proto
+```
 
+This will create the `meal_pb2.py` Python class file
+
+```python
+import meal_pb2
+ 
+mybeer = Meal.DrinkItems(drink_name="beer")
+mywine = Meal.DrinkItems(drink_name="wine")
+meal =   Meal(name='pizza', drink=[mybeer,mywine])
+
+producer.produce(topic='MEAL_PROTO', value=meal)
+```
 
 ### Setup Python virtual environment 
 
-```
+```bash
 virtualenv myenv
 . ./myenv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Python compile schema
-```
-protoc -I=. --python_out=. ./user.proto
-```
 
 
 

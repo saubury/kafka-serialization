@@ -1,17 +1,30 @@
+syntax = "proto2";
+
 message Meal {
   required string name = 1;
   optional string alternate_name = 2;
 
   enum FoodType {
     INGREDIENT = 0;
-    SNACK = 1;
-    DRINK = 2;
+    FILLING = 1;
+    TOPPING = 2;
+  }
+
+  enum DrinkType {
+    BUBBLY = 0;
+    ALCOHOLIC = 1;
   }
 
   message MealItems {
-    required string number = 1;
+    required string item_name = 1;
     optional FoodType type = 2 [default = INGREDIENT];
   }
 
+  message DrinkItems {
+    required string drink_name = 1;
+    optional DrinkType type = 2 ;
+  }
+
   repeated MealItems item = 4;
+  repeated DrinkItems drink = 5;
 }

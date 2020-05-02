@@ -3,3 +3,4 @@ OLD/*
 __pycache__/*
 *__pb2.py
 person_pb2.py
+meal_pb2.py
