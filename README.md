@@ -4,6 +4,8 @@ Experiments with Kafka serialization schemes
 
 Apache Avro was has been the defacto Kafka serialization mechanism for a long time.   Confluent [just updated](https://www.confluent.io/blog/confluent-platform-now-supports-protobuf-json-schema-custom-formats/) their Kafka streaming platform with additioinal support for serializing data with Protocol buffers (or _protobuf_) and JSON Schema serialization.  
 
+![alt splash](./docs/landing.png )
+
 
 Protobuf is especially cool, and offers up some neat opportunities beyond what was possible in Avro.  The inclusion of Protobuf and JSON Schema applies at producer and consumer libraries, schema registry, Kafka connect, ksqlDB along with Control Center.
 
